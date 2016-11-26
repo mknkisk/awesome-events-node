@@ -5,6 +5,9 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+var db = require('./config/db');
+var mongoose = require('mongoose');
+
 var index = require('./routes/index');
 var users = require('./routes/users');
 
@@ -42,5 +45,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+// connect mongodb
+mongoose.connect(db[app.get('env')]);
 
 module.exports = app;
