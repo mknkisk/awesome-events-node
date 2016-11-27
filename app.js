@@ -3,13 +3,19 @@ const path = require('path')
 // const favicon = require('serve-favicon')
 const logger = require('morgan')
 const cookieParser = require('cookie-parser')
+const flash = require('connect-flash')
 const bodyParser = require('body-parser')
 
 const mongoose = require('mongoose')
 const config = require('config')
 
 const index = require('./routes/index')
+const oauth = require('./routes/oauth')
 const users = require('./routes/users')
+
+const User = require('./models/user')
+const passport = require('passport')
+const TwitterStrategy = require('passport-twitter').Strategy
 
 const app = express()
 
@@ -23,9 +29,60 @@ app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(cookieParser())
+app.use(flash())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// passport setup
+passport.serializeUser(function (user, done) {
+  done(null, user)
+})
+
+passport.deserializeUser(function (obj, done) {
+  done(null, obj)
+})
+
+passport.use(new TwitterStrategy(
+  {
+    consumerKey: process.env.TWITTER_CONSUMER_KEY,
+    consumerSecret: process.env.TWITTER_CONSUMER_SECRET,
+    callbackURL: 'http://127.0.0.1:3000/oauth/callback/'
+  },
+  function (token, tokenSecret, profile, done) {
+    console.log(token, tokenSecret, profile)
+
+    process.nextTick(function () {
+      let uid = profile.id
+
+      User.findOneAndUpdate({
+        uid: uid,
+        provider: profile.provider
+      }, {
+        $set: {
+          uid: uid,
+          nickname: profile.username,
+          image_url: profile.photos[0].value
+        }
+      }, {
+        upsert: true
+      }, function (err, user) {
+        console.log('findOneAndUpdate err:', err, 'user:', user)
+        return done(null, user)
+      })
+    })
+  }
+))
+
+app.use(passport.initialize())
+
+// session
+app.use(require('express-session')({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: false
+}))
+
 app.use('/', index)
+app.use('/oauth', oauth)
 app.use('/users', users)
 
 // catch 404 and forward to error handler
