@@ -5,8 +5,8 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 
-const db = require('./config/db')
 const mongoose = require('mongoose')
+const config = require('config')
 
 const index = require('./routes/index')
 const users = require('./routes/users')
@@ -47,6 +47,6 @@ app.use(function (err, req, res, next) {
 })
 
 // connect mongodb
-mongoose.connect(db[app.get('env')])
+mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.dbName}`)
 
 module.exports = app

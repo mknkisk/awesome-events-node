@@ -246,6 +246,12 @@ concat-stream@^1.4.6:
     readable-stream "~2.0.0"
     typedarray "~0.0.5"
 
+config:
+  version "1.24.0"
+  resolved "https://registry.yarnpkg.com/config/-/config-1.24.0.tgz#553bc4d77637d6630a305b52c33cb6da2b9f42f0"
+  dependencies:
+    json5 "0.4.0"
+
 constantinople@^3.0.1:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/constantinople/-/constantinople-3.1.0.tgz#7569caa8aa3f8d5935d62e1fa96f9f702cd81c79"
@@ -800,6 +806,10 @@ json-stable-stringify@^1.0.0, json-stable-stringify@^1.0.1:
   resolved "https://registry.yarnpkg.com/json-stable-stringify/-/json-stable-stringify-1.0.1.tgz#9a759d39c5f2ff503fd5300646ed445f88c4f9af"
   dependencies:
     jsonify "~0.0.0"
+
+json5@0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/json5/-/json5-0.4.0.tgz#054352e4c4c80c86c0923877d449de176a732c8d"
 
 jsonify@~0.0.0:
   version "0.0.0"
