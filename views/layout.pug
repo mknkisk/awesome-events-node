@@ -22,7 +22,7 @@ html
           ul.nav.navbar-nav.navbar-right
             li
               if session && Object.keys(session).length > 0
-                a(href="#") Logout
+                a(href="/logout") Logout
               else
                 a(href="/oauth") Twitter Login
               end
