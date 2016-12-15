@@ -5,6 +5,8 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const bodyParser = require('body-parser')
+const session = require('express-session')
+const MongoStore = require('connect-mongo')(session)
 
 const mongoose = require('mongoose')
 const config = require('config')
@@ -32,13 +34,28 @@ app.use(cookieParser())
 app.use(flash())
 app.use(express.static(path.join(__dirname, 'public')))
 
+// connect mongodb
+mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.dbName}`)
+mongoose.set('debug', true)
+
+// session
+app.use(session({
+  secret: 'keyboard cat',
+  store: new MongoStore({ mongooseConnection: mongoose.connection }),
+  resave: false,
+  saveUninitialized: false
+}))
+
 // passport setup
 passport.serializeUser(function (user, done) {
-  done(null, user)
+  done(null, user.id)
 })
 
-passport.deserializeUser(function (obj, done) {
-  done(null, obj)
+passport.deserializeUser(function (id, done) {
+  User.findById(id, function (err, user) {
+    if (err) { return done(err) }
+    done(err, user)
+  })
 })
 
 passport.use(new TwitterStrategy(
@@ -73,13 +90,7 @@ passport.use(new TwitterStrategy(
 ))
 
 app.use(passport.initialize())
-
-// session
-app.use(require('express-session')({
-  secret: 'keyboard cat',
-  resave: false,
-  saveUninitialized: false
-}))
+app.use(passport.session())
 
 app.use('/', index)
 app.use('/oauth', oauth)
@@ -102,8 +113,5 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500)
   res.render('error')
 })
-
-// connect mongodb
-mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.dbName}`)
 
 module.exports = app

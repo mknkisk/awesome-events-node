@@ -5,14 +5,13 @@ const router = express.Router()
 router.get('/', function (req, res, next) {
   res.render('index', {
     title: 'login demo',
-    session: req.session.passport,
+    user: req.user,
     message: req.flash('success')
   })
 })
 
 router.get('/logout', function (req, res, next) {
   req.logout()
-  req.session.destroy()
   res.redirect('/')
 })
 

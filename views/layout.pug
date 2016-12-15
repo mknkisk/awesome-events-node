@@ -21,7 +21,7 @@ html
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             li
-              if session && Object.keys(session).length > 0
+              if user
                 a(href="/logout") Logout
               else
                 a(href="/oauth") Twitter Login
@@ -29,7 +29,7 @@ html
 
     .container
       if message && message.length > 0
-        if session && Object.keys(session).length > 0
+        if user
           .alert.alert-success= message
         else
           .alert.alert-danger= message
