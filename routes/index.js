@@ -1,12 +1,17 @@
 const express = require('express')
 const router = express.Router()
 
+router.use(function (req, res, next) {
+  res.locals.currentUser = req.user
+  res.locals.errors = req.flash('error')
+  res.locals.infos = req.flash('info')
+  next()
+})
+
 /* GET home page. */
 router.get('/', function (req, res, next) {
   res.render('index', {
-    title: 'login demo',
-    user: req.user,
-    message: req.flash('success')
+    title: 'login demo'
   })
 })
 

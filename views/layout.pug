@@ -21,17 +21,16 @@ html
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
             li
-              if user
+              if currentUser
                 a(href="/logout") Logout
               else
                 a(href="/oauth") Twitter Login
               end
 
     .container
-      if message && message.length > 0
-        if user
-          .alert.alert-success= message
-        else
-          .alert.alert-danger= message
+      each error in errors
+        .alert.alert-danger= error
+      each info in infos
+        .alert.alert-success= info
 
       block content
