@@ -24,7 +24,8 @@ const EventSchema = new Schema({
     type: String,
     maxlength: 2000,
     required: true
-  }
+  },
+  user: { type: Schema.ObjectId, ref: 'User' }
 })
 
 const startTimeShouldBeBeforeEndTime = function (value) {
