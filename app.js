@@ -21,6 +21,7 @@ const passport = require('passport')
 const TwitterStrategy = require('passport-twitter').Strategy
 
 const app = express()
+app.locals._ = require('lodash')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
