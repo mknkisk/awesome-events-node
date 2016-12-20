@@ -12,7 +12,7 @@ function ensureAuthenticated (req, res, next) {
 }
 
 router.get('/new', ensureAuthenticated, function (req, res, next) {
-  res.render('events/new')
+  res.render('events/new', { event: new Event() })
 })
 
 router.get('/:eventId', function (req, res, next) {
@@ -36,14 +36,14 @@ router.post('/', ensureAuthenticated, function (req, res, next) {
     user: req.user.id
   })
 
-  event.save(function (err, event) {
+  event.save(function (err, _event) {
     if (err) {
-      next(err)
+      res.render('events/new', { event: event, error: err })
       return
     }
 
     req.flash('info', 'Event Created!')
-    res.redirect(`/events/${event.id}`)
+    res.redirect(`/events/${_event.id}`)
   })
 })
 

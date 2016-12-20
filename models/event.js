@@ -14,10 +14,12 @@ const EventSchema = new Schema({
   },
   startTime: {
     type: Date,
+    default: Date.now,
     required: true
   },
   endTime: {
     type: Date,
+    default: Date.now,
     required: true
   },
   content: {
