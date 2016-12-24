@@ -16,14 +16,16 @@ router.get('/new', ensureAuthenticated, function (req, res, next) {
 })
 
 router.get('/:eventId', function (req, res, next) {
-  Event.findById(req.params.eventId, function (err, event) {
-    if (err) {
-      next(err)
-      return
-    }
+  Event.findById(req.params.eventId)
+    .populate('user')
+    .exec(function (err, event) {
+      if (err) {
+        next(err)
+        return
+      }
 
-    res.render('events/show', { event: event })
-  })
+      res.render('events/show', { event: event, owner: event.user })
+    })
 })
 
 router.post('/', ensureAuthenticated, function (req, res, next) {

@@ -1,5 +1,21 @@
 extends ../layout
 
 block content
-  h1 Event Detail
-  p Event Detail
+  .page-header
+  h1= event.name
+
+  .panel.panel-default
+    .panel-heading Organizer
+    .panel-body
+      a(href="https://twitter.com/" + owner.nickname target="_blank")
+        img(src=owner.image_url style="margin-right: 1em")
+        = '@' + owner.nickname
+  .panel.panel-default
+    .panel-heading Time
+    .panel-body #{moment(event.startTime).format('LLLL')} - #{moment(event.endTime).format('LLLL')}
+  .panel.panel-default
+    .panel-heading Place
+    .panel-body= event.place
+  .panel.panel-default
+    .panel-heading Content
+    .panel-body= event.content
