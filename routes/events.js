@@ -1,6 +1,7 @@
 const Event = require('../models/event')
 const express = require('express')
 const router = express.Router()
+const moment = require('moment-timezone')
 
 function ensureAuthenticated (req, res, next) {
   if (req.isAuthenticated()) {
@@ -46,8 +47,8 @@ router.post('/', ensureAuthenticated, function (req, res, next) {
   let event = new Event({
     name: req.body.name,
     place: req.body.place,
-    startTime: new Date(req.body.startTime),
-    endTime: new Date(req.body.endTime),
+    startTime: moment.tz(req.body.startTime, 'Asia/Tokyo').toDate(),
+    endTime: moment.tz(req.body.endTime, 'Asia/Tokyo').toDate(),
     content: req.body.content,
     user: req.user.id
   })
