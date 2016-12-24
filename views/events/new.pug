@@ -20,10 +20,10 @@ block content
       input.form-control(type="text" name="place" max-length="100" required="" value=event.place)
     .form-group
       label(form="startTime") Start Time
-      input.form-control(type="datetime-local" name="startTime" min=datetimeFormat(moment(event.startTime).startOf('day')) max=datetimeFormat(moment(event.startTime).add(1, 'years').endOf('day')) required="" value=datetimeFormat(event.startTime))
+      input.form-control(type="datetime-local" name="startTime" min=datetimeFormat(moment(event.startTime).startOf('day')) max=datetimeFormat(moment(event.startTime).add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.startTime))
     .form-group
       label(form="startTime") End Time
-      input.form-control(type="datetime-local" name="endTime" min=datetimeFormat(moment(event.endTime).startOf('day')) max=datetimeFormat(moment(event.endTime).add(1, 'years').endOf('day')) required="" value=datetimeFormat(event.endTime))
+      input.form-control(type="datetime-local" name="endTime" min=datetimeFormat(moment(event.endTime).startOf('day')) max=datetimeFormat(moment(event.endTime).add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.endTime))
     .form-group
       label(form="content") Content
       textarea.form-control(name="content" max-length="2000" rows="10" required="" value="#{event.conten}")
