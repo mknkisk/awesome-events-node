@@ -11,6 +11,8 @@ const MongoStore = require('connect-mongo')(session)
 const mongoose = require('mongoose')
 const config = require('config')
 
+const moment = require('moment')
+
 const index = require('./routes/index')
 const oauth = require('./routes/oauth')
 const users = require('./routes/users')
@@ -21,7 +23,11 @@ const passport = require('passport')
 const TwitterStrategy = require('passport-twitter').Strategy
 
 const app = express()
+
+// view helpers
 app.locals._ = require('lodash')
+app.locals.moment = moment
+app.locals.datetimeFormat = (val) => { return moment(val).format('YYYY-MM-DDTHH:mm') }
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'))
