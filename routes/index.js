@@ -1,13 +1,26 @@
+const Event = require('../models/event')
 const express = require('express')
 const router = express.Router()
 
-/* GET home page. */
+router.use(function (req, res, next) {
+  res.locals.currentUser = req.user
+  res.locals.errors = req.flash('error')
+  res.locals.infos = req.flash('info')
+  next()
+})
+
 router.get('/', function (req, res, next) {
-  res.render('index', {
-    title: 'login demo',
-    user: req.user,
-    message: req.flash('success')
-  })
+  Event.find()
+    .gt('startTime', Date.now())
+    .sort({ startTime: 'asc' })
+    .exec(function (err, events) {
+      if (err) {
+        next(err)
+        return
+      }
+
+      res.render('index', { events: events })
+    })
 })
 
 router.get('/logout', function (req, res, next) {

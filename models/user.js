@@ -19,7 +19,8 @@ const UserSchema = new Schema({
   image_url: {
     type: String,
     required: true
-  }
+  },
+  events: [{ type: Schema.ObjectId, ref: 'Event' }]
 })
 
 // TODO Validates
