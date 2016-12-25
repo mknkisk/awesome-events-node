@@ -37,4 +37,11 @@ const startTimeShouldBeBeforeEndTime = function (value) {
 
 EventSchema.path('startTime').validate(startTimeShouldBeBeforeEndTime, 'start time always lesser than end time.')
 
+EventSchema.methods.createdBy = function (user) {
+  if (user === undefined) {
+    return false
+  }
+  return this.user.id === user.id
+}
+
 module.exports = mongoose.model('Event', EventSchema)
