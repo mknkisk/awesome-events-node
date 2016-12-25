@@ -39,6 +39,10 @@ router.get('/:eventId', function (req, res, next) {
         return
       }
 
+      if (event === null) {
+        return res.status(404).render('404')
+      }
+
       res.render('events/show', { event: event, owner: event.user })
     })
 })
