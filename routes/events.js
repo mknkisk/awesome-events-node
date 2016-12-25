@@ -12,20 +12,6 @@ function ensureAuthenticated (req, res, next) {
   }
 }
 
-router.get('/', function (req, res, next) {
-  Event.find()
-    .gt('startTime', Date.now())
-    .sort({ startTime: 'asc' })
-    .exec(function (err, events) {
-      if (err) {
-        next(err)
-        return
-      }
-
-      res.render('events/index', { events: events })
-    })
-})
-
 router.get('/new', ensureAuthenticated, function (req, res, next) {
   res.render('events/new', { event: new Event() })
 })
