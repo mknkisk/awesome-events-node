@@ -5,6 +5,7 @@ const logger = require('morgan')
 const cookieParser = require('cookie-parser')
 const flash = require('connect-flash')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override')
 const session = require('express-session')
 const MongoStore = require('connect-mongo')(session)
 
@@ -38,6 +39,14 @@ app.set('view engine', 'pug')
 app.use(logger('dev'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
+app.use(methodOverride(function (req, res) {
+  if (req.body && typeof req.body === 'object' && '_method' in req.body) {
+    // look in urlencoded POST bodies and delete it
+    var method = req.body._method
+    delete req.body._method
+    return method
+  }
+}))
 app.use(cookieParser())
 app.use(flash())
 app.use(express.static(path.join(__dirname, 'public')))
