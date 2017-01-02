@@ -20,7 +20,7 @@ block content
         .panel-body= event.place
       .panel.panel-default
         .panel-heading Content
-        .panel-body= event.content
+        .panel-body(style="white-space: pre-wrap;")= event.content
     .col-md-4
       if event.createdBy(currentUser)
         a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit") Edit Event
