@@ -14,17 +14,17 @@ block content
 
     .form-group
       label(form="name") Name
-      input.form-control(type="text" name="name" max-length="50" required="" value=event.name)
+      input.form-control(type="text" name="name" max-length="50" required="")
     .form-group
       label(form="place") Place
-      input.form-control(type="text" name="place" max-length="100" required="" value=event.place)
+      input.form-control(type="text" name="place" max-length="100" required="")
     .form-group
       label(form="startTime") Start Time
-      input.form-control(type="datetime-local" name="startTime" min=datetimeFormat(moment(event.startTime).startOf('day')) max=datetimeFormat(moment(event.startTime).add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.startTime))
+      input.form-control(type="datetime-local" name="startTime" min=datetimeFormat(moment().startOf('day')) max=datetimeFormat(moment().add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(moment().startOf('day')))
     .form-group
       label(form="startTime") End Time
-      input.form-control(type="datetime-local" name="endTime" min=datetimeFormat(moment(event.endTime).startOf('day')) max=datetimeFormat(moment(event.endTime).add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.endTime))
+      input.form-control(type="datetime-local" name="endTime" min=datetimeFormat(moment().startOf('day')) max=datetimeFormat(moment().add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(moment().startOf('day')))
     .form-group
       label(form="content") Content
-      textarea.form-control(name="content" max-length="2000" rows="10" required="" value="#{event.conten}")
+      textarea.form-control(name="content" max-length="2000" rows="10" required="")
     button.btn.btn-default(type="submit") Create

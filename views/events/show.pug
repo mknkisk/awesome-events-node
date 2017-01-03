@@ -2,20 +2,25 @@ extends ../layout
 
 block content
   .page-header
-  h1= event.name
+    h1= event.name
 
-  .panel.panel-default
-    .panel-heading Organizer
-    .panel-body
-      a(href="https://twitter.com/" + owner.nickname target="_blank")
-        img(src=owner.image_url style="margin-right: 1em")
-        = '@' + owner.nickname
-  .panel.panel-default
-    .panel-heading Time
-    .panel-body #{moment(event.startTime).format('LLLL')} - #{moment(event.endTime).format('LLLL')}
-  .panel.panel-default
-    .panel-heading Place
-    .panel-body= event.place
-  .panel.panel-default
-    .panel-heading Content
-    .panel-body= event.content
+  .row
+    .col-md-8
+      .panel.panel-default
+        .panel-heading Organizer
+        .panel-body
+          a(href="https://twitter.com/" + owner.nickname target="_blank")
+            img(src=owner.image_url style="margin-right: 1em")
+            = '@' + owner.nickname
+      .panel.panel-default
+        .panel-heading Time
+        .panel-body #{moment(event.startTime).format('LLLL')} - #{moment(event.endTime).format('LLLL')}
+      .panel.panel-default
+        .panel-heading Place
+        .panel-body= event.place
+      .panel.panel-default
+        .panel-heading Content
+        .panel-body(style="white-space: pre-wrap;")= event.content
+    .col-md-4
+      if event.createdBy(currentUser)
+        a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit") Edit Event

@@ -1,0 +1,31 @@
+extends ../layout
+
+block content
+  .page-header
+    h1 Edit Event
+
+  form(method="POST" action="/events/" + event.id enctype="application/x-www-form-urlencoded")
+    if error
+      - _.forEach(error.errors, function(value, key) {
+        .alert.alert-danger
+          ul
+            li= value
+      - })
+
+    .form-group
+      label(form="name") Name
+      input.form-control(type="text" name="name" max-length="50" required="" value=event.name)
+    .form-group
+      label(form="place") Place
+      input.form-control(type="text" name="place" max-length="100" required="" value=event.place)
+    .form-group
+      label(form="startTime") Start Time
+      input.form-control(type="datetime-local" name="startTime" min=datetimeFormat(moment().startOf('day')) max=datetimeFormat(moment().add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.startTime))
+    .form-group
+      label(form="startTime") End Time
+      input.form-control(type="datetime-local" name="endTime" min=datetimeFormat(moment().startOf('day')) max=datetimeFormat(moment().add(1, 'years').endOf('day')) step="600" required="" value=datetimeFormat(event.endTime))
+    .form-group
+      label(form="content") Content
+      textarea.form-control(name="content" max-length="2000" rows="10" required="")= event.content
+    input(type="hidden" name="_method" value="PUT")
+    button.btn.btn-default(type="submit") Save
