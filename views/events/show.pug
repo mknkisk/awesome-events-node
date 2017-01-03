@@ -23,4 +23,7 @@ block content
         .panel-body(style="white-space: pre-wrap;")= event.content
     .col-md-4
       if event.createdBy(currentUser)
-        a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit") Edit Event
+        a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit" style="margin-bottom: 5px") Edit Event
+        form(method="POST" action="/events/" + event.id enctype="application/x-www-form-urlencoded")
+          input(type="hidden" name="_method" value="DELETE")
+          button.btn.btn-danger.btn-lg.btn-block(type="submit") Delete Event
