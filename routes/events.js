@@ -99,4 +99,18 @@ router.put('/:eventId', ensureAuthenticated, function (req, res, next) {
     })
 })
 
+router.delete('/:eventId', ensureAuthenticated, function (req, res, next) {
+  Event.findByIdAndRemove(req.params.eventId)
+    .exec(function (err, event) {
+      if (err) {
+        console.error(err)
+        next(err)
+        return
+      }
+
+      req.flash('info', 'Event Deleted!')
+      res.redirect('/')
+    })
+})
+
 module.exports = router
