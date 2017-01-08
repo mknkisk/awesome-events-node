@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "description": "Node.js based web application sample",
   "scripts": {
-    "start": "node_modules/.bin/supervisor ./bin/www"
+    "start": "$(npm bin)/supervisor ./bin/www",
+    "test": "$(npm bin)/mocha --recursive"
   },
   "dependencies": {
     "body-parser": "~1.15.2",
