@@ -25,6 +25,9 @@ const TwitterStrategy = require('passport-twitter').Strategy
 
 const app = express()
 
+// globals
+global.__root = __dirname
+
 // view helpers
 app.locals._ = require('lodash')
 app.locals.moment = moment
