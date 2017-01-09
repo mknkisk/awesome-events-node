@@ -996,6 +996,10 @@ lodash.keys@^3.0.0:
     lodash.isarguments "^3.0.0"
     lodash.isarray "^3.0.0"
 
+lodash@^2.4.1:
+  version "2.4.2"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-2.4.2.tgz#fadd834b9683073da179b3eae6d9c0d15053f73e"
+
 longest@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/longest/-/longest-1.0.1.tgz#30a0b2da38f73770e8294a0d22e6625ed77d0097"
@@ -1123,6 +1127,13 @@ mongoose:
     muri "1.1.1"
     regexp-clone "0.0.1"
     sliced "1.0.1"
+
+monky@^0.6.10:
+  version "0.6.10"
+  resolved "https://registry.yarnpkg.com/monky/-/monky-0.6.10.tgz#52307d846e7af85cd13dfbfe01bca0aa476e273d"
+  dependencies:
+    lodash "^2.4.1"
+    mpromise "0.5.5"
 
 morgan@~1.7.0:
   version "1.7.0"
