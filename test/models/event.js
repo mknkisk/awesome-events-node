@@ -1,19 +1,29 @@
 const monky = require('../setup').monky
 const expect = require('chai').expect
+const async = require('async')
 
 describe('Event', () => {
   beforeEach((done) => {
     let suite = this
 
-    monky.build('User', function (err, user) {
-      if (err) { console.error(err) }
-      suite.user = user
-
-      monky.build('Event', { user: suite.user.id }, function (err, event) {
-        if (err) { console.error(err) }
-        suite.event = event
-        done()
-      })
+    async.series([
+      (next) => {
+        monky.build('User', (err, user) => {
+          if (err) { throw err }
+          suite.user = user
+          next()
+        })
+      },
+      (next) => {
+        monky.build('Event', { user: suite.user.id }, function (err, event) {
+          if (err) { throw err }
+          suite.event = event
+          next()
+        })
+      }
+    ], (err, results) => {
+      if (err) { throw err }
+      done()
     })
   })
 
