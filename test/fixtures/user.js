@@ -1,6 +1,6 @@
-require('../../models/user')
-
 let define = (monky) => {
+  require(require('path').join(global.__root, 'models/user'))
+
   monky.factory('User',
     {
       provider: 'twitter',

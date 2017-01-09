@@ -1,6 +1,6 @@
-require('../../models/event')
-
 let define = (monky) => {
+  require(require('path').join(global.__root, 'models/event'))
+
   monky.factory('Event',
     {
       name: 'Sample Event',
