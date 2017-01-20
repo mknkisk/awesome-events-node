@@ -6,3 +6,7 @@ plugins:
 env:
   node: true
   mocha: true
+globals:
+  Vue: true
+  axios: true
+  _: true

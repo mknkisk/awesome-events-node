@@ -18,6 +18,7 @@ const index = require('./routes/index')
 const oauth = require('./routes/oauth')
 const users = require('./routes/users')
 const events = require('./routes/events')
+const tickets = require('./routes/tickets')
 
 const User = require('./models/user')
 const passport = require('passport')
@@ -52,7 +53,7 @@ app.use(methodOverride(function (req, res) {
 }))
 app.use(cookieParser())
 app.use(flash())
-app.use(express.static(path.join(__dirname, 'public')))
+app.use('/static', express.static(path.join(__dirname, 'public')))
 
 // connect mongodb
 mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.dbName}`)
@@ -115,6 +116,7 @@ app.use(passport.session())
 app.use('/', index)
 app.use('/oauth', oauth)
 app.use('/users', users)
+events.use('/:eventId/tickets', tickets)
 app.use('/events', events)
 
 // catch 404 and forward to error handler
