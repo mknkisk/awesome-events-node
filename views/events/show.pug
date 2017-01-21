@@ -46,3 +46,14 @@ block content
                   button.btn.btnbtn-primary(type="submit") Submit
       else
         a.btn.btn-primary.btn-lg.btn-block(href=`/events/${event.id}/tickets/new`) Join
+      hr
+      .panel.panel-default
+        .panel-heading 参加者
+        .panel-body
+          ul.list-unstyled
+            each ticket in tickets
+              li
+                a(href="https://twitter.com/" + ticket.user.nickname target="_blank" style="margin-right: 5px;")
+                  img(src=ticket.user.image_url style="margin-right: 1em")
+                  = ticket.user.nickname
+                = ticket.comment
