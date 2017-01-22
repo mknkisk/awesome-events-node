@@ -8,6 +8,8 @@ const TicketSchema = new Schema({
   },
   user: { type: Schema.ObjectId, ref: 'User' },
   event: { type: Schema.ObjectId, ref: 'Event' }
+}, {
+  timestamps: true
 })
 
 module.exports = mongoose.model('Ticket', TicketSchema)
