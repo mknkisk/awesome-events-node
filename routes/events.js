@@ -40,8 +40,7 @@ router.get('/:eventId', function (req, res, next) {
       ({event}, done) => {
         Ticket.find({ event: event.id })
           .populate('user')
-          // TODO sort
-          // .sort({ startTime: 'asc' })
+          .sort({ createdAt: 'asc' })
           .exec(function (err, tickets) {
             done(err, tickets)
           })
