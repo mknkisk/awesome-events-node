@@ -12,4 +12,6 @@ const TicketSchema = new Schema({
   timestamps: true
 })
 
+TicketSchema.index({ user: 1, event: 1 }, { unique: true })
+
 module.exports = mongoose.model('Ticket', TicketSchema)

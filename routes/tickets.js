@@ -23,7 +23,13 @@ router.post('/', ensureAuthenticated, function (req, res, next) {
 
   ticket.save(function (err, result) {
     if (err) {
-      return res.status(422).json({ errors: err.errors })
+      console.error(err)
+
+      if (err.name === 'ValidationError') {
+        return res.status(422).json({ errors: err.errors })
+      } else {
+        return res.status(500).json({ errors: { message: 'Unknown Error' } })
+      }
     }
 
     req.flash('info', 'Participated in this event!')
