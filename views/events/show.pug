@@ -21,14 +21,18 @@ block content
       .panel.panel-default
         .panel-heading Content
         .panel-body(style="white-space: pre-wrap;")= event.content
-    .col-md-4
+    .col-md-4#rightMenu
       if event.createdBy(currentUser)
         a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit" style="margin-bottom: 5px") Edit Event
         form(method="POST" action="/events/" + event.id enctype="application/x-www-form-urlencoded" style="margin-bottom: 5px")
           input(type="hidden" name="_method" value="DELETE")
           button.btn.btn-danger.btn-lg.btn-block(type="submit") Delete Event
 
-      if currentUser
+      if userTicket
+        form(method="POST" action=`/events/${event.id}/tickets/${userTicket.id}` enctype="application/x-www-form-urlencoded" style="margin-bottom: 5px")
+          input(type="hidden" name="_method" value="DELETE")
+          button.btn.btn-warning.btn-lg.btn-block(type="submit") Cancel
+      else if currentUser
         button.btnbtn-primary.btn-lg.btn-block(data-toggle="modal" data-target="#createTicket") Join
         .modal.fade(id="createTicket" tabindex="-1" role="dialog" aria-labelledby="dialogHeader" aria-hidden="true")
           .modal-dialog

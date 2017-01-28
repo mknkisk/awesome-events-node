@@ -37,4 +37,18 @@ router.post('/', ensureAuthenticated, function (req, res, next) {
   })
 })
 
+router.delete('/:ticketId', ensureAuthenticated, function (req, res, next) {
+  Ticket.findByIdAndRemove(req.params.ticketId)
+    .exec(function (err, event) {
+      if (err) {
+        console.error(err)
+        next(err)
+        return
+      }
+
+      req.flash('info', 'Cancellation has been completed!')
+      res.redirect('/')
+    })
+})
+
 module.exports = router

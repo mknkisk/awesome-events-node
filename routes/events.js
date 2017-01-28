@@ -45,14 +45,23 @@ router.get('/:eventId', function (req, res, next) {
             done(err, tickets)
           })
       }
+    ],
+    userTicket: [
+      'event',
+      ({event}, done) => {
+        Ticket.findOne({ event: event.id, user: req.user._id })
+          .exec(function (err, ticket) {
+            done(err, ticket)
+          })
+      }
     ]
-  }, (err, {event, tickets}) => {
+  }, (err, {event, tickets, userTicket}) => {
     if (err) {
       console.error(err)
       return next(new Error('404'))
     }
 
-    res.render('events/show', { event: event, owner: event.user, tickets: tickets })
+    res.render('events/show', { event: event, owner: event.user, tickets: tickets, userTicket: userTicket })
   })
 })
 

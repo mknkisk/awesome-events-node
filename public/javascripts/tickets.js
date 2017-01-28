@@ -3,7 +3,7 @@
 
   /* eslint-disable no-new */
   new Vue({
-    el: '#createTicket',
+    el: '#rightMenu',
     data: {
       comment: '',
       errors: {}
