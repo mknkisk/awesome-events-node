@@ -21,6 +21,8 @@ const UserSchema = new Schema({
     required: true
   },
   events: [{ type: Schema.ObjectId, ref: 'Event' }]
+}, {
+  timestamps: true
 })
 
 // TODO Validates

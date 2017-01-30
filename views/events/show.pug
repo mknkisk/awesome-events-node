@@ -21,9 +21,43 @@ block content
       .panel.panel-default
         .panel-heading Content
         .panel-body(style="white-space: pre-wrap;")= event.content
-    .col-md-4
+    .col-md-4#rightMenu
       if event.createdBy(currentUser)
         a.btn.btn-info.btn-lg.btn-block(href="/events/" + event.id + "/edit" style="margin-bottom: 5px") Edit Event
-        form(method="POST" action="/events/" + event.id enctype="application/x-www-form-urlencoded")
+        form(method="POST" action="/events/" + event.id enctype="application/x-www-form-urlencoded" style="margin-bottom: 5px")
           input(type="hidden" name="_method" value="DELETE")
           button.btn.btn-danger.btn-lg.btn-block(type="submit") Delete Event
+
+      if userTicket
+        form(method="POST" action=`/events/${event.id}/tickets/${userTicket.id}` enctype="application/x-www-form-urlencoded" style="margin-bottom: 5px")
+          input(type="hidden" name="_method" value="DELETE")
+          button.btn.btn-warning.btn-lg.btn-block(type="submit") Cancel
+      else if currentUser
+        button.btnbtn-primary.btn-lg.btn-block(data-toggle="modal" data-target="#createTicket") Join
+        .modal.fade(id="createTicket" tabindex="-1" role="dialog" aria-labelledby="dialogHeader" aria-hidden="true")
+          .modal-dialog
+            .modal-content
+              .modal-header
+                button.close(type="button" data-dismiss="modal" aria-hidden="true") &times;
+                h4.modal-title#dialogHeader Comment
+              form(v-on:submit.prevent="submit")
+                .modal-body
+                  .alert.alert-danger(role="alert" v-if="errors.comment && errors.comment.message") {{ errors.comment.message }}
+                  .alert.alert-danger(role="alert" v-if="errors.message") {{ errors.message }}
+                  input.form-control(type="text" id="page_name" name="comment" max-length="30" v-model.trim="comment")
+                .modal-footer
+                  button.btn.btn-default(type="button" data-dismiss="modal") Cancel
+                  button.btn.btnbtn-primary(type="submit") Submit
+      else
+        a.btn.btn-primary.btn-lg.btn-block(href=`/events/${event.id}/tickets/new`) Join
+      hr
+      .panel.panel-default
+        .panel-heading 参加者
+        .panel-body
+          ul.list-unstyled
+            each ticket in tickets
+              li
+                a(href="https://twitter.com/" + ticket.user.nickname target="_blank" style="margin-right: 5px;")
+                  img(src=ticket.user.image_url style="margin-right: 1em")
+                  = ticket.user.nickname
+                = ticket.comment

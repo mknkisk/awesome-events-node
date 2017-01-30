@@ -1,7 +1,9 @@
 const Event = require('../models/event')
+const Ticket = require('../models/ticket')
 const express = require('express')
 const router = express.Router()
 const moment = require('moment-timezone')
+const async = require('async')
 
 function ensureAuthenticated (req, res, next) {
   if (req.isAuthenticated()) {
@@ -17,20 +19,50 @@ router.get('/new', ensureAuthenticated, function (req, res, next) {
 })
 
 router.get('/:eventId', function (req, res, next) {
-  Event.findById(req.params.eventId)
-    .populate('user')
-    .exec(function (err, event) {
-      if (err) {
-        next(err)
-        return
-      }
+  async.auto({
+    event: (done) => {
+      Event.findById(req.params.eventId)
+        .populate('user')
+        .exec(function (err, event) {
+          if (err) {
+            return done(err)
+          }
 
-      if (event === null) {
-        return res.status(404).render('404')
-      }
+          if (event === null) {
+            return done(new Error('Event not found'))
+          }
 
-      res.render('events/show', { event: event, owner: event.user })
-    })
+          done(null, event)
+        })
+    },
+    tickets: [
+      'event',
+      ({event}, done) => {
+        Ticket.find({ event: event.id })
+          .populate('user')
+          .sort({ createdAt: 'asc' })
+          .exec(function (err, tickets) {
+            done(err, tickets)
+          })
+      }
+    ],
+    userTicket: [
+      'event',
+      ({event}, done) => {
+        Ticket.findOne({ event: event.id, user: req.user._id })
+          .exec(function (err, ticket) {
+            done(err, ticket)
+          })
+      }
+    ]
+  }, (err, {event, tickets, userTicket}) => {
+    if (err) {
+      console.error(err)
+      return next(new Error('404'))
+    }
+
+    res.render('events/show', { event: event, owner: event.user, tickets: tickets, userTicket: userTicket })
+  })
 })
 
 router.post('/', ensureAuthenticated, function (req, res, next) {
