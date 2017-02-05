@@ -11,6 +11,7 @@ const MongoStore = require('connect-mongo')(session)
 
 const mongoose = require('mongoose')
 const config = require('config')
+require('dotenv').config()
 
 const moment = require('moment')
 
