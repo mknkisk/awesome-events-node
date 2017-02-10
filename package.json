@@ -4,7 +4,8 @@
   "description": "Node.js based web application sample",
   "scripts": {
     "start": "$(npm bin)/supervisor ./bin/www",
-    "test": "$(npm bin)/mocha --recursive"
+    "test": "$(npm bin)/mocha --reporter nyan --recursive",
+    "cover": "istanbul cover _mocha --recursive -- test/models test/routes"
   },
   "dependencies": {
     "async": "^2.1.4",
@@ -35,6 +36,7 @@
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.0",
     "eslint-plugin-standard": "^2.0.1",
+    "istanbul": "^0.4.5",
     "mocha": "^3.2.0",
     "passport-stub": "^1.1.1",
     "supertest": "^3.0.0"

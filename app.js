@@ -58,7 +58,7 @@ app.use('/static', express.static(path.join(__dirname, 'public')))
 
 // connect mongodb
 mongoose.connect(`mongodb://${config.db.host}:${config.db.port}/${config.db.dbName}`)
-mongoose.set('debug', true)
+// mongoose.set('debug', true)
 
 // session
 app.use(session({
