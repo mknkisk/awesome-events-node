@@ -10,5 +10,9 @@ globals:
   Vue: true
   axios: true
   _: true
+  # test library
+  monky: true
+  expect: true
+  dbCleaner: true
 rules:
   no-multi-spaces: ["error", { exceptions: { "Property": true, "VariableDeclarator": true } }]

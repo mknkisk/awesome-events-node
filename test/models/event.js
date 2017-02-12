@@ -1,5 +1,3 @@
-const monky = require('../setup').monky
-const expect = require('chai').expect
 const async = require('async')
 
 describe('Event', () => {

@@ -1,14 +1,10 @@
 const app = require('../../app')
-const monky     = require('../setup').monky
 const supertest = require('supertest')
 const mongoose  = require('mongoose')
 const async     = require('async')
-const expect    = require('chai').expect
 const passportStub = require('passport-stub')
 
 const path = require('path')
-const User   = require(path.join(global.__root, 'models/user'))
-const Event  = require(path.join(global.__root, 'models/event'))
 const Ticket = require(path.join(global.__root, 'models/ticket'))
 
 // setting
@@ -58,16 +54,8 @@ describe('POST /events/:eventId/tickets', () => {
   })
 
   afterEach((done) => {
-    async.each([
-      User,
-      Event,
-      Ticket
-    ], (model, next) => {
-      model.remove((err) => {
-        next(err)
-      })
-    }, (err) => {
-      done(err)
+    dbCleaner.clean(mongoose.connection.db, () => {
+      done()
     })
   })
 
