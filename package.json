@@ -4,8 +4,8 @@
   "description": "Node.js based web application sample",
   "scripts": {
     "start": "$(npm bin)/supervisor ./bin/www",
-    "test": "$(npm bin)/mocha --reporter nyan --recursive",
-    "cover": "istanbul cover _mocha --recursive -- test/models test/routes"
+    "test": "$(npm bin)/mocha",
+    "cover": "istanbul cover _mocha -- test/models test/routes"
   },
   "dependencies": {
     "async": "^2.1.4",
