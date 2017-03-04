@@ -3,7 +3,6 @@ const Ticket = require('../models/ticket')
 const express = require('express')
 const router = express.Router()
 const moment = require('moment-timezone')
-const async = require('async')
 
 function ensureAuthenticated (req, res, next) {
   if (req.isAuthenticated()) {
@@ -19,50 +18,32 @@ router.get('/new', ensureAuthenticated, function (req, res, next) {
 })
 
 router.get('/:eventId', function (req, res, next) {
-  async.auto({
-    event: (done) => {
-      Event.findById(req.params.eventId)
-        .populate('user')
-        .exec(function (err, event) {
-          if (err) {
-            return done(err)
-          }
+  let bucket = {}
 
-          if (event === null) {
-            return done(new Error('Event not found'))
-          }
+  Event.findById(req.params.eventId).populate('user').exec()
+    .then(
+      (event) => {
+        if (event === null) {
+          // TODO: Define Not Found Error
+          let e = new Error('Event not found')
+          e.status = 404
+          throw e
+        }
 
-          done(null, event)
-        })
-    },
-    tickets: [
-      'event',
-      ({event}, done) => {
-        Ticket.find({ event: event.id })
-          .populate('user')
-          .sort({ createdAt: 'asc' })
-          .exec(function (err, tickets) {
-            done(err, tickets)
-          })
-      }
-    ],
-    userTicket: [
-      'event',
-      ({event}, done) => {
-        Ticket.findOne({ event: event.id, user: req.user._id })
-          .exec(function (err, ticket) {
-            done(err, ticket)
-          })
-      }
-    ]
-  }, (err, {event, tickets, userTicket}) => {
-    if (err) {
-      console.error(err)
-      return next(new Error('404'))
-    }
-
-    res.render('events/show', { event: event, owner: event.user, tickets: tickets, userTicket: userTicket })
-  })
+        bucket.event = event
+        return Promise.all([
+          Ticket.find({ event: event.id }).populate('user').sort({ createdAt: 'asc' }).exec(),
+          Ticket.findOne({ event: event.id, user: req.user.id }).exec()
+        ])
+      },
+      (error) => { next(error) }
+    )
+    .then(
+      (results) => {
+        res.render('events/show', { event: bucket.event, owner: bucket.event.user, tickets: results[0], userTicket: results[1] })
+      },
+      (error) => { next(error) }
+    )
 })
 
 router.post('/', ensureAuthenticated, function (req, res, next) {
