@@ -129,6 +129,14 @@ app.use(function (req, res, next) {
   next(new NotFoundError('Routing Not Found'))
 })
 
+app.use(function (err, req, res, next) {
+  if (err instanceof NotFoundError) {
+    res.status(404).render('404')
+  } else {
+    next(err)
+  }
+})
+
 // error handler
 app.use(function (err, req, res, next) {
   // set locals, only providing error in development
