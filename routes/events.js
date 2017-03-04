@@ -1,5 +1,6 @@
 const Event = require('../models/event')
 const Ticket = require('../models/ticket')
+const NotFoundError = require('./error/notFound')
 const express = require('express')
 const router = express.Router()
 const moment = require('moment-timezone')
@@ -23,12 +24,7 @@ router.get('/:eventId', function (req, res, next) {
   Event.findById(req.params.eventId).populate('user').exec()
     .then(
       (event) => {
-        if (event === null) {
-          // TODO: Define Not Found Error
-          let e = new Error('Event not found')
-          e.status = 404
-          throw e
-        }
+        if (event === null) { throw new NotFoundError('Event not found') }
 
         bucket.event = event
         return Promise.all([

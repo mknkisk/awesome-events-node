@@ -15,6 +15,7 @@ require('dotenv').config()
 
 const moment = require('moment')
 
+// Routes
 const index = require('./routes/index')
 const oauth = require('./routes/oauth')
 const users = require('./routes/users')
@@ -24,6 +25,9 @@ const tickets = require('./routes/tickets')
 const User = require('./models/user')
 const passport = require('passport')
 const TwitterStrategy = require('passport-twitter').Strategy
+
+// Error
+const NotFoundError = require('./routes/error/notFound')
 
 const app = express()
 
@@ -122,9 +126,7 @@ app.use('/events', events)
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
-  let err = new Error('Not Found')
-  err.status = 404
-  next(err)
+  next(new NotFoundError('Routing Not Found'))
 })
 
 // error handler
