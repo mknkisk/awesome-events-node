@@ -1,28 +1,20 @@
-const async = require('async')
-
 describe('Event', () => {
   beforeEach((done) => {
     let suite = this
 
-    async.series([
-      (next) => {
-        monky.build('User', (err, user) => {
-          if (err) { throw err }
-          suite.user = user
-          next()
-        })
+    monky.build('User').then(
+      (user) => {
+        suite.user = user
+        return monky.build('Event', { user: suite.user.id })
       },
-      (next) => {
-        monky.build('Event', { user: suite.user.id }, function (err, event) {
-          if (err) { throw err }
-          suite.event = event
-          next()
-        })
-      }
-    ], (err, results) => {
-      if (err) { throw err }
-      done()
-    })
+      (err) => { throw err }
+    ).then(
+      (event) => {
+        suite.event = event
+        done()
+      },
+      (err) => { throw err }
+    )
   })
 
   describe('validating', () => {

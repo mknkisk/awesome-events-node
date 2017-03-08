@@ -8,6 +8,8 @@ const expect = require('chai').expect
 const Cleaner = require('database-cleaner')
 const dbCleaner = new Cleaner('mongodb')
 
+mongoose.Promise = global.Promise
+
 global.__root = path.join(__dirname, '..')
 global.monky = monky
 global.expect = expect
