@@ -27,10 +27,14 @@ router.get('/:eventId', function (req, res, next) {
         if (event === null) { throw new NotFoundError('Event not found') }
 
         bucket.event = event
-        return Promise.all([
-          Ticket.find({ event: event.id }).populate('user').sort({ createdAt: 'asc' }).exec(),
-          Ticket.findOne({ event: event.id, user: req.user.id }).exec()
-        ])
+
+        let promises = [Ticket.find({ event: event.id }).populate('user').sort({ createdAt: 'asc' }).exec()]
+
+        if (req.user) {
+          promises.push(Ticket.findOne({ event: event.id, user: req.user.id }).exec())
+        }
+
+        return Promise.all(promises)
       },
       (error) => { next(error) }
     )
