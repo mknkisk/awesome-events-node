@@ -19,30 +19,35 @@ router.get('/new', ensureAuthenticated, function (req, res, next) {
 })
 
 router.get('/:eventId', function (req, res, next) {
-  let bucket = {}
-
   Event.findById(req.params.eventId).populate('user').exec()
     .then(
       (event) => {
         if (event === null) { throw new NotFoundError('Event not found') }
 
-        bucket.event = event
-
-        let promises = [Ticket.find({ event: event.id }).populate('user').sort({ createdAt: 'asc' }).exec()]
+        let promises = [
+          new Promise((resolve, reject) => { resolve(event) }),
+          Ticket.find({ event: event.id }).populate('user').sort({ createdAt: 'asc' }).exec()
+        ]
 
         if (req.user) {
-          promises.push(Ticket.findOne({ event: event.id, user: req.user.id }).exec())
+          promises.push(
+            Ticket.findOne({ event: event.id, user: req.user.id }).exec()
+          )
         }
 
         return Promise.all(promises)
-      },
-      (error) => { next(error) }
+      }
     )
     .then(
-      (results) => {
-        res.render('events/show', { event: bucket.event, owner: bucket.event.user, tickets: results[0], userTicket: results[1] })
-      },
-      (error) => { next(error) }
+      ([event, tickets, userTicket]) => {
+        res.render('events/show', { event: event, owner: event.user, tickets: tickets, userTicket: userTicket })
+      }
+    )
+    .catch(
+      (error) => {
+        console.error(error)
+        next(error)
+      }
     )
 })
 
