@@ -33,7 +33,7 @@ router.post('/', ensureAuthenticated, function (req, res, next) {
     }
 
     req.flash('info', 'Participated in this event!')
-    res.send(201)
+    res.sendStatus(201)
   })
 })
 
